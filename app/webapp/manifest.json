@@ -1,0 +1,143 @@
+{
+	"_version": "1.8.0",
+	"sap.app": {
+		"id": "${project.artifactId}",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "${project.version}"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"tags": {
+			"keywords": []
+		},
+		"ach": "BC-SRV-NWD",
+		"resources": "resources.json",
+		"dataSources": {
+			"mainService": {
+				"uri": "/odata/v2/caps.products.CatalogService/",
+				"type": "OData"
+			}
+		},
+		"offline": false,
+		"sourceTemplate": {
+			"id": "html5moduletemplates.smartTemplateModule",
+			"version": "1.40.12"
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"fullWidth": false
+	},
+	"sap.ui5": {
+		"resources": {
+			"js": [],
+			"css": []
+		},
+		"dependencies": {
+			"minUI5Version": "${sap.ui5.dist.version}",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {},
+				"sap.ui.comp": {},
+				"sap.uxap": {},
+				"sap.suite.ui.generic.template": {},
+				"sap.ui.layout": {},
+				"sap.ushell": {},
+				"sap.collaboration": {}
+			},
+			"components": {}
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"uri": "i18n/i18n.properties"
+			},
+			"i18n|sap.suite.ui.generic.template.ListReport|Products": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"uri": "i18n/ListReport/Products/i18n.properties"
+			},
+			"": {
+				"dataSource": "mainService",
+				"settings": {
+					"defaultBindingMode": "TwoWay",
+					"defaultCountMode": "Inline",
+					"refreshAfterChange": false
+				}
+			}
+		},
+		"extends": {
+			"extensions": {
+				"sap.ui.viewExtensions": {
+					"sap.suite.ui.generic.template.ListReport.view.ListReport": {
+						"SmartFilterBarControlConfigurationExtension|Products": {
+							"className": "sap.ui.core.Fragment",
+							"fragmentName": "bookshopagain.main.ext.fragment.CustomFilter",
+							"type": "XML"
+						}
+					}
+				},
+				"sap.ui.controllerExtensions": {
+					"sap.suite.ui.generic.template.ListReport.view.ListReport": {
+						"controllerName": "bookshopagain.main.ext.controller.ListReportExt"
+					}
+				}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		}
+	},
+	"sap.ui.generic.app": {
+		"pages": [{
+			"entitySet": "Products",
+			"component": {
+				"name": "sap.suite.ui.generic.template.ListReport",
+				"list": true,
+				"settings": {
+					"gridTable": false,
+					"multiSelect": true,
+					"smartVariantManagement": true
+				}
+			},
+			"pages": [{
+				"entitySet": "Products",
+				"component": {
+					"name": "sap.suite.ui.generic.template.ObjectPage",
+					"settings": {
+						"editableHeaderContent": true
+					}
+				},
+				"pages": [{
+					"navigationProperty": "reviews",
+					"entitySet": "Reviews",
+					"component": {
+						"name": "sap.suite.ui.generic.template.ObjectPage"
+					}
+				}]
+			}]
+		}]
+	},
+	"sap.fiori": {
+		"registrationIds": [],
+		"archeType": "transactional"
+	},
+	"sap.platform.hcp": {
+		"uri": ""
+	}
+}

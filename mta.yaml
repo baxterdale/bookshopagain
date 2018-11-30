@@ -1,0 +1,58 @@
+_schema-version: 2.0.0
+ID: bookshopagain
+version: 1.0.0
+modules:
+  - name: app
+    type: html5
+    path: app
+    parameters:
+      memory: 256M
+      disk-quota: 256M
+    requires:
+      - name: bookshopagain-uaa
+      - group: destinations
+        name: srv_api
+        properties:
+          forwardAuthToken: true
+          name: srv_api
+          url: '~{url}'
+  - name: db
+    type: hdb
+    path: db
+    parameters:
+      memory: 256M
+      disk-quota: 256M
+    requires:
+      - name: bookshopagain-hdi-container
+  - name: srv
+    type: nodejs
+    path: srv
+    parameters:
+      memory: 512M
+      disk-quota: 256M
+    provides:
+      - name: srv_api
+        properties:
+          url: '${default-url}'
+    requires:
+      - name: bookshopagain-uaa
+      - name: bookshopagain-hdi-container
+resources:
+  - name: bookshopagain-uaa
+    type: com.sap.xs.uaa
+    parameters:
+      service-plan: default
+      config:
+        xsappname: 'bookshopagain-${org}-${space}'
+        tenant-mode: dedicated
+        scopes:
+          - name: $XSAPPNAME.Show
+            description: display
+          - name: $XSAPPNAME.Add
+            description: create
+          - name: $XSAPPNAME.Remove
+            description: delete
+  - name: bookshopagain-hdi-container
+    properties:
+      hdi-container-name: '${service-name}'
+    type: com.sap.xs.hdi-container

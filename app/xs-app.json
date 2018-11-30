@@ -1,0 +1,12 @@
+{
+	"welcomeFile": "test/flpSandbox.html",
+	"routes": [{
+			"source": "/odata/v2",
+			"destination": "srv_api"
+		},
+		{
+			"source": "^/(.*)",
+			"localDir": "webapp"
+		}
+	]
+}
