@@ -1,0 +1,1 @@
+cds.load('./db/data-model') .then (cds.compile.to.yml)
